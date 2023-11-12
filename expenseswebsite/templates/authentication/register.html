@@ -14,7 +14,11 @@
     <div class="card-title py-2">
       <h4>Register Account</h4>
     </div>
-    <form action="" method="post">
+
+    <form action="{% url 'register'%}" method="post">
+      {% csrf_token %}
+
+      {% include 'partials/messages.html' %}
       <div class="form-group py-2">
         <input
         type="text"
@@ -22,12 +26,14 @@
         placeholder="Username"
         id="usernameField"
         class="form-control form-control-sm"
+        value="{{fieldValues.username}}"
         />
       </div>
 
       <div class="invalid-feedback" style="display:none">
-        <p></p>
       </div>
+
+      <p class="text-sm text-success usernameSuccessOutput"></p>
     <div class="form-group py-2">
       <input
       type="email"
@@ -35,6 +41,7 @@
       placeholder="Email"
       id="emailField"
       class="form-control form-control-sm"
+      value="{{fieldValues.email}}"
       />
     </div>
 
@@ -48,12 +55,9 @@
       id="passwordField"
       class="form-control form-control-sm"
       />
+      <small class="showPasswordToggle">SHOW</small>
     </div>
-
-    <input
-    type="submit"
-    value="Register"
-    class="btn btn-block btn-primary"
+    <input type="submit" value="Register" class="btn btn-block btn-primary submit-btn"
     />
     </form>
   </div>
