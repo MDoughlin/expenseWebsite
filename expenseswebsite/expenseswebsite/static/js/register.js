@@ -7,17 +7,19 @@ const showPasswordToggle = document.querySelector('.showPasswordToggle');
 const passwordField = document.querySelector('#passwordField');
 const submitBtn = document.querySelector('.submit-btn');
 
-const handleToggleInput = (e) => {
-  if (showPasswordToggle.textContent === "SHOW") {
-    showPasswordToggle.textContent = "HIDE";
-    passwordField.setAttribute("type", "text");
-  } else {
-    showPasswordToggle.textContent = "SHOW";
-    passwordField.setAttribute("type", "password");
-  }
-};
+// const handleToggleInput = (e) => {
+//   if (showPasswordToggle.textContent === "SHOW") {
+//     showPasswordToggle.textContent = "HIDE";
+//     passwordField.setAttribute("type", "text");
+//   } else {
+//     showPasswordToggle.textContent = "SHOW";
+//     passwordField.setAttribute("type", "password");
+//   }
+// };
 
-showPasswordToggle.addEventListener('click', handleToggleInput);
+// showPasswordToggle.addEventListener("click", handleToggleInput);
+
+
 
 emailField.addEventListener('keyup', (e) => {
   const emailValue = e.target.value;
