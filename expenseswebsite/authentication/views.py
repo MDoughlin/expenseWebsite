@@ -4,8 +4,8 @@ import json
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 from validate_email import validate_email
-from django.contrib import messages
-from django.contrib import auth
+from django.contrib import messages, auth
+from django.contrib.auth import authenticate, login
 # from django.core.mail import EmailMessage
 
 # Create your views here
@@ -15,20 +15,24 @@ class LoginView(View):
     return render(request, 'authentication/login.html')
 
   def post(self, request):
-    username=request.POST['username']
-    password=request.POST['password']
+    username=request.POST.get('username')
+    password=request.POST.get('password')
 
     if username and password:
-      user = auth.authenticate(username=username, password=password)
+      user = authenticate(username=username, password=password)
 
-      if user:
+      if user is not None:
         if user.is_active:
-          auth.login(request, user)
-          messages.success(request, 'Welcome, '+user.username+' you are now logged in')
-          print('Is this working?')
+          login(request, user)
+          messages.success(request, f'Welcome, {user.username}! You are now logged in')
           return redirect('expenses')
+        else:
+          messages.error(request, 'Your account is not active')
+      else:
+        messages.error(request, 'Invalid username or password')
+    return render(request, 'authentication/login.html')
 
-      return redirect('expenses')
+
 
 class LogoutView(View):
   def post(self, request):
@@ -61,7 +65,7 @@ class RegistrationView(View):
 
         user = User.objects.create_user(username=username, email=email)
         user.set_password(password)
-        user.is_active=False
+        user.is_active=True
         user.save()
         messages.success(request, 'Account successfully created')
         return render(request, 'authentication/register.html')
