@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
 <div class="container mt-4">
 
@@ -17,9 +17,21 @@
     <a href='{%url 'add-expense'%}' class='btn btn-primary'>Add Expense</a>
   </div>
 </div>
+
 <div class="container">
   {% include 'partials/messages.html' %}
   {% if expenses.count %}
+
+  <div class="row">
+    <div class="col-md-8"></div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <input class="form-control" id="searchField" placeholder="Search"></input>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-table">
   <table class="table table-stripped table-hover">
     <thead>
       <tr>
@@ -45,11 +57,31 @@
         {% endfor%}
       </tbody>
   </table>
+</div>
 
+  <div class="table-output">
+    <table class="table table-stripped table-hover">
+      <thead>
+        <tr>
+          <th>Amount (Currency)</th>
+          <th>Description </th>
+          <th>Category </th>
+          <th>Date</th>
+          <th></th>
+        </tr>
+      </thead>
+
+        <tbody class="table-body">
+        </tbody>
+    </table>
+
+  </div>
+
+<div class="pagination-container">
   <div class="">
     Showing page {{ page_obj.number}} of {{ page_obj.paginator.num_pages }}
   </div>
-  {% comment %} need to move pagination to the right of the page {% endcomment %}
+  {% comment %} need to move pagination to the right of the page .. why is this not working {% endcomment %}
   <ul class="pagination align-right float-right mr-auto">
     {% if page_obj.has_previous %}
     <li {% if page_obj.number == 1 %} class="page-item active" {% endif %}><a class="page-link" href="?page=1">&laquo; 1</a></li>
@@ -61,16 +93,17 @@
     <li class="page-item"> <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages}} &raquo;</a></li>
   </ul>
 
-    {% endif %}
-
-
-    </ul>
   {% endif %}
+
+
+</ul>
+{% endif %}
+</div>
 </div>
 </div>
 </div>
 
 
-
+<script src ="{% static 'js/searchExpenses.js' %}"></script>
 
 {% endblock content %}
