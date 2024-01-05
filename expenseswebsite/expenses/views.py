@@ -12,18 +12,22 @@ from userpreferences.models import UserPreference
 
 @login_required(login_url='/authentication/login')
 def index(request):
-  categories = Category.objects.all()
-  expenses = Expense.objects.filter(owner=request.user)
-  paginator = Paginator(expenses, 5)
-  page_number=request.GET.get('page')
-  page_obj = Paginator.get_page(paginator, page_number)
-  currency = UserPreference.objects.get(user=request.user).currency
-  context={
-      "expenses": expenses,
-      'page_obj': page_obj,
-      'currency': currency
-  }
-  return render(request,'expenses/index.html', context)
+    categories = Category.objects.all()
+    expenses = Expense.objects.filter(owner=request.user)
+    paginator = Paginator(expenses, 5)
+    page_number = request.GET.get('page')
+    page_obj = Paginator.get_page(paginator, page_number)
+    try:
+        currency = UserPreference.objects.get(user=request.user).currency
+    except UserPreference.DoesNotExist:
+        # Handle the case where UserPreference doesn't exist for the user
+        currency = None
+    context = {
+        'expenses': expenses,
+        'page_obj': page_obj,
+        'currency': currency,
+    }
+    return render(request, 'expenses/index.html', context)
 
 def add_expense(request):
     categories = Category.objects.all()
